@@ -5,19 +5,19 @@ import contentProvider from "../libs/contents"
 import vectorProvider from "../libs/vectors"
 
 async function execute(): Promise<void> {
-  const contents = await contentProvider.getContents()
+      const contents = await contentProvider.getContents()
 
-  if (contents) {
-    const embedContents = contents.map((content) => ({
-      key: content.key,
-      message: `${content.summary}\n\n${content.content}`,
-      metadata: content.metadata,
-    }))
+      if (contents) {
+        const embedContents = contents.map((content) => ({
+          key: content.key,
+          message: `${content.summary}\n\n${content.content}`,
+          metadata: content.metadata,
+        }))
 
-    await vectorProvider.reset()
+        await vectorProvider.reset()
 
-    await vectorProvider.upsert(embedContents)
-  }
+        await vectorProvider.upsert(embedContents)
+      }
 }
 
 execute()

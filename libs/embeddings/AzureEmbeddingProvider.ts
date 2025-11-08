@@ -19,7 +19,7 @@ export class AzureEmbeddingProvider implements IEmbeddingProvider {
       }
     })
 
-    const flatTexts = chunkTexts.flatMap(text=>text.chunks)
+    const flatTexts = chunkTexts.flatMap((text) => text.chunks)
 
     const results = await client.embeddings.create({
       input: flatTexts,
@@ -30,15 +30,15 @@ export class AzureEmbeddingProvider implements IEmbeddingProvider {
     return results.data.map((embed) => {
       const chunkText = flatTexts[embed.index]
 
-      const chunkContent = chunkTexts.find(
-        (chunks) => chunks.chunks.includes(chunkText)
+      const chunkContent = chunkTexts.find((chunks) =>
+        chunks.chunks.includes(chunkText)
       )
 
       return {
         key: chunkContent?.key,
         message: chunkText,
         values: embed.embedding,
-        metadata: chunkContent?.metadata
+        metadata: chunkContent?.metadata,
       } as EmbedResult
     })
   }

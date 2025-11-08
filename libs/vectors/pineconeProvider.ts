@@ -22,7 +22,10 @@ export class PineconeProvider implements IVectorProvider {
       process.env.PINECONE_INDEX_HOST || ""
     )
 
-    await index.deleteAll()
+    const results = await index.describeIndexStats()
+    if ((results.totalRecordCount ?? 0) > 0) {
+      await index.deleteAll()
+    }
   }
 
   async upsert(contents: VectorContent[]): Promise<void> {

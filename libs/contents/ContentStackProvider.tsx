@@ -11,16 +11,31 @@ const stack = Contentstack.Stack({
 
 interface ContentstackEntry {
   uid: string
-  article_content: {
-    byline: string
-  }
+  title: string
+  product_copy: {
+    product_byline: string
+    overview: string
+  } & { [key: string]: JOSNRteField }
+}
+
+interface JSONRteNode {
+  type: "ul" | "li" | "p"
+  children: (JSONRteNode | { text: string })[]
+}
+
+interface JOSNRteField {
+  type: "doc"
+  uid: string
+  children: JSONRteNode[]
 }
 
 export default class ContentStackProvider implements IContentProvider {
   async getContents(): Promise<ContentEntry[] | null> {
     const entries = []
     for (;;) {
-      let query = stack.ContentType("health_hub").Query() as Contentstack.Query
+      let query = stack
+        .ContentType(process.env.CONTENTSTACK_CMS_CONTENTTYPE || "")
+        .Query() as Contentstack.Query
       if (entries.length > 0) {
         query = query.skip(entries.length)
       }
@@ -47,9 +62,35 @@ function mapEntries(entries: ContentstackEntry[]): ContentEntry[] {
 }
 
 function mapEntry(entry: ContentstackEntry): ContentEntry {
+  const texts: string[] = []
+  for (const key in entry.product_copy) {
+    texts.push(extractTextFromRteNode(entry.product_copy[key] as JOSNRteField))
+  }
+
   return {
     key: entry.uid,
-    summary: entry.article_content.byline,
-    content: "",
+    summary: entry.product_copy.product_byline || "",
+    content: texts.join("\n\n"),
   }
+}
+
+function extractTextFromRteNode(jsonRte: JOSNRteField): string {
+  const texts: string[] = []
+
+  function traverse(node: JSONRteNode | { text: string }) {
+    if ("text" in node) {
+      texts.push(node.text)
+    } else if ("children" in node) {
+      for (const child of node.children) {
+        traverse(child)
+      }
+      if (node.type === "p" || node.type === "ul") {
+        texts.push("\n")
+      }
+    }
+  }
+
+  jsonRte.children?.map((node) => traverse(node))
+
+  return texts.join("").trim()
 }
