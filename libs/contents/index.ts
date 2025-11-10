@@ -1,8 +1,8 @@
-import ContentStackProvider from "./ContentStackProvider"
 import { IContentProvider } from "./provider"
+import { ShopifyProvider } from "./ShopifyProvider"
 
 export type { ContentEntry, IContentProvider } from "./provider"
 
-const contentProvider: IContentProvider = new ContentStackProvider()
+const contentProvider: IContentProvider = new ShopifyProvider()
 
 export default contentProvider

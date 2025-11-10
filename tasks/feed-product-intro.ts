@@ -1,24 +1,7 @@
-import { en } from "zod/locales"
 import "./setup-env"
 import { createAzure } from "@ai-sdk/azure"
 import { generateText } from "ai"
-
-const queryProducts = `
-query ($first: Int, $after: String) {
-  products(first: $first, after: $after) {
-    pageInfo {
-      hasNextPage
-      endCursor
-    }
-    products: edges {
-      product: node {
-        id
-        title
-      }
-    }
-  }
-}
-`
+import { getProducts, invokeShopifyAdminApi } from "@/libs/shopify/products"
 
 const updateProduct = `
 mutation($product: ProductUpdateInput){
@@ -30,25 +13,6 @@ mutation($product: ProductUpdateInput){
 }
 `
 
-interface ProductInfo {
-  id: string
-  title: string
-}
-
-interface ProductsResponse {
-  data: {
-    products: {
-      pageInfo: {
-        hasNextPage: boolean
-        endCursor: string | null
-      }
-      products: {
-        product: ProductInfo
-      }[]
-    }
-  }
-}
-
 const azure = createAzure({
   apiKey: process.env.AZURE_OPENAI_API_KEY,
   baseURL: process.env.AZURE_OPENAI_EndPoint,
@@ -56,71 +20,23 @@ const azure = createAzure({
 
 const client = azure(process.env.AZURE_OPENAI_MODEL!)
 
-async function fetchProducts(): Promise<ProductInfo[]> {
-  const products: ProductInfo[] = []
-
-  let endCursor: string | null = null
-
-  while (true) {
-    const response = (await fetch(
-      `https://${process.env.SHOPIFY_DOMAIN}/admin/api/2025-10/graphql.json`,
-      {
-        method: "POST",
-        headers: {
-          "X-Shopify-Access-Token": process.env.SHOPIFY_ADMIN_ACCESS_TOKEN!,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: queryProducts,
-          variables: {
-            first: 10,
-            after: endCursor,
-          },
-        }),
-      }
-    ).then<ProductsResponse>((res) => res.json())) as ProductsResponse
-
-    products.push(
-      ...response.data.products.products.map((edge) => edge.product)
-    )
-
-    endCursor = response.data.products.pageInfo.endCursor
-
-    if (!endCursor) {
-      break
-    }
-  }
-
-  return products
-}
-
 async function updateProductDescription(
   id: string,
   description: string
 ): Promise<void> {
-  await fetch(
-    `https://${process.env.SHOPIFY_DOMAIN}/admin/api/2025-10/graphql.json`,
-    {
-      method: "POST",
-      headers: {
-        "X-Shopify-Access-Token": process.env.SHOPIFY_ADMIN_ACCESS_TOKEN!,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: updateProduct,
-        variables: {
-          product: {
-            id: id,
-            descriptionHtml: description,
-          },
-        },
-      }),
-    }
-  ).then((res) => res.json())
+  await invokeShopifyAdminApi<
+    object,
+    { product: { id: string; descriptionHtml: string } }
+  >(updateProduct, {
+    product: {
+      id: id,
+      descriptionHtml: description,
+    },
+  })
 }
 
 async function execute(): Promise<void> {
-  const products = await fetchProducts()
+  const products = await getProducts()
 
   for (const product of products) {
     const { text } = await generateText({

@@ -44,12 +44,12 @@ export class PineconeProvider implements IVectorProvider {
           metadata: {
             message: embed.message,
             key: embed.key,
-            metadata: embed.metadata ?? [],
+            ...(embed.metadata ?? {}),
           },
         } as PineconeRecord<RecordMetadata>
       }
     )
-
+    
     for (let i = 0; i < records.length; i += 50) {
       const array = records.slice(i, i + 50)
       await index.upsert(array)

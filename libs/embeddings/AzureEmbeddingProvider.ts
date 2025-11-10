@@ -15,7 +15,7 @@ export class AzureEmbeddingProvider implements IEmbeddingProvider {
       return {
         chunks: this.chunkText(content.message),
         key: content.key,
-        metadata: content.metadata
+        metadata: content.metadata,
       }
     })
 
@@ -43,7 +43,7 @@ export class AzureEmbeddingProvider implements IEmbeddingProvider {
     })
   }
 
-  chunkText(text: string, maxTokens = 500, overlapTokens = 50): string[] {
+  chunkText(text: string, maxTokens = 200, overlapTokens = 50): string[] {
     const enc = encoding_for_model("text-embedding-3-large")
     const tokens = enc.encode(text)
     const chunks: string[] = []

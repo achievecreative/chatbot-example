@@ -4,7 +4,7 @@ export interface IContentProvider {
 
 export interface ContentEntry {
   key: string
-  summary: string
-  content: string
+  summary?: string
+  content?: string
   metadata?: Record<string, string>
 }
