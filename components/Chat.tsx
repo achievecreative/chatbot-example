@@ -2,60 +2,69 @@
 
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
-import clsx from "clsx"
-import { useRef } from "react"
+import { Conversation, ConversationContent } from "./ai-elements/conversation"
+import { Message, MessageContent, MessageResponse } from "./ai-elements/message"
+import {
+  PromptInput,
+  PromptInputBody,
+  PromptInputFooter,
+  PromptInputHeader,
+  PromptInputMessage,
+  PromptInputSubmit,
+  PromptInputTextarea,
+  PromptInputTools,
+} from "./ai-elements/prompt-input"
 
 export default function Chat() {
-  const messageInputRef = useRef<HTMLTextAreaElement>(null)
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
   })
 
-  const submit = () => {
-    const message = messageInputRef.current?.value
-    if (!message) {
+  const handleSubmit = (message: PromptInputMessage) => {
+    const messageContent = message?.text?.trim() || ""
+    if (!messageContent) {
       return
     }
 
-    sendMessage({ text: message })
-    messageInputRef.current!.value = ""
+    sendMessage({ text: messageContent })
+    message.text = ""
   }
 
   return (
     <>
-      {messages.map((msg) => (
-        <div key={msg.id} className="message-item p-3">
-          {msg.parts.map((part, index) => {
-            if (part.type === "text") {
-              return <div key={index}>{part.text}</div>
-            }
+      <Conversation className="w-full">
+        <ConversationContent>
+          {messages.map((msg) => (
+            <div key={msg.id} className="message-item p-3">
+              {msg.parts.map((part, index) => {
+                if (part.type === "text") {
+                  return (
+                    <Message key={index} from={msg.role}>
+                      <MessageContent>
+                        <MessageResponse>{part.text}</MessageResponse>
+                      </MessageContent>
+                    </Message>
+                  )
+                }
+                return null
+              })}
+            </div>
+          ))}
+        </ConversationContent>
+      </Conversation>
 
-            return null
-          })}
-        </div>
-      ))}
-      <div className="p-4 w-full">
-        <textarea
-          id="message-input"
-          className="placeholder:text-primary-60 text-p2 w-full resize-none bg-transparent focus:outline-none border border-gray-300 rounded-md p-3 shadow-xl"
-          rows={6}
-          ref={messageInputRef}
-        />
-      </div>
-      <div className="w-full flex justify-end p-4">
-        <button
-          onClick={submit}
-          disabled={status !== "ready"}
-          className={clsx(
-            "rounded-4xl bg-sky-600 px-5 py-4 w-48 text-white font-medium hover:bg-sky-700",
-            "disabled:bg-gray-400 disabled:cursor-not-allowed"
-          )}
-        >
-          Send
-        </button>
-      </div>
+      <PromptInput onSubmit={handleSubmit} className="mt-4" globalDrop multiple>
+        <PromptInputHeader>Good day!</PromptInputHeader>
+        <PromptInputBody>
+          <PromptInputTextarea placeholder="What kind of Snowboard you are looking for?" />
+        </PromptInputBody>
+        <PromptInputFooter>
+          <PromptInputTools />
+          <PromptInputSubmit disabled={status !== "ready"} />
+        </PromptInputFooter>
+      </PromptInput>
     </>
   )
 }

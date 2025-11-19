@@ -5,8 +5,9 @@ export interface VectorContent {
 }
 
 export interface IVectorProvider {
-    
   upsert(contents: VectorContent[]): Promise<void>
 
   reset(): Promise<void>
+
+  search(content: string): Promise<VectorContent[]>
 }

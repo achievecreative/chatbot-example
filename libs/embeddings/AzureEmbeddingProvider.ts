@@ -1,5 +1,6 @@
-import { encoding_for_model } from "tiktoken"
+import { Tiktoken } from "js-tiktoken/lite"
 import { EmbedContent, EmbedResult, IEmbeddingProvider } from "./provider"
+import o200k_base from "js-tiktoken/ranks/o200k_base"
 
 import { AzureOpenAI } from "openai"
 
@@ -44,7 +45,7 @@ export class AzureEmbeddingProvider implements IEmbeddingProvider {
   }
 
   chunkText(text: string, maxTokens = 200, overlapTokens = 50): string[] {
-    const enc = encoding_for_model("text-embedding-3-large")
+    const enc = new Tiktoken(o200k_base)
     const tokens = enc.encode(text)
     const chunks: string[] = []
 
@@ -52,8 +53,7 @@ export class AzureEmbeddingProvider implements IEmbeddingProvider {
     while (start < tokens.length) {
       const end = Math.min(start + maxTokens, tokens.length)
       const chunk = enc.decode(tokens.slice(start, end))
-      const decoder = new TextDecoder("utf-8")
-      chunks.push(decoder.decode(chunk))
+      chunks.push(chunk)
       start += maxTokens - overlapTokens // move window forward
     }
 
