@@ -3,7 +3,7 @@ import { convertToModelMessages, generateText, streamText } from "ai"
 import modelProvider from "@/libs/models"
 import vectorProvider from "@/libs/vectors"
 
-import z from "zod"
+import { z } from "zod"
 
 export async function POST(req: Request) {
   const model = modelProvider.getModel()

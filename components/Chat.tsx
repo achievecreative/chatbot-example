@@ -62,6 +62,13 @@ export default function Chat() {
                   const searchResult = part.output as {
                     steps: { content: { text: string }[] }[]
                   }
+                  if (
+                    !searchResult?.steps?.length ||
+                    !searchResult.steps[0].content?.length
+                  ) {
+                    return
+                  }
+
                   return (
                     <Message key={index} from={msg.role}>
                       <MessageContent>
