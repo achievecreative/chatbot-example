@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a chatbot example, which will help customer to find the right product and place an order via chatboat.
 
-## Getting Started
+You will need the following envs to run the example on your local:
+#### Pinecone
+```
+PINECONE_INDEX_NAME
 
-First, run the development server:
+PINECONE_API_KEY
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+PINECONE_INDEX_HOST
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Azure OpenAI
+```
+AZURE_OPENAI_API_KEY
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+AZURE_OPENAI_MODEL
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+AZURE_OPENAI_EndPoint
+```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+#### Azure Embedding
+```
+AZURE_EMBEDDING_API_KEY
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+AZURE_EMBEDDING_ENDPOINT
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+AZURE_EMBEDDING_API_VERSION
+```
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### Contentstack
+_If you want to pull data from Contentstack_
+```
+CONTENTSTACK_CMS_STACK_API_KEY
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+CONTENTSTACK_CMS_DELIVERY_TOKEN
+
+CONTENTSTACK_ENVIRONMENT
+
+CONTENTSTACK_CMS_REGION
+
+CONTENTSTACK_CMS_BRANCH
+
+CONTENTSTACK_CMS_CONTENTTYPE
+```
+
+
+#### Shopify
+```
+SHOPIFY_DOMAIN
+
+SHOPIFY_STOREFRONT_ACCESS_TOKEN
+
+SHOPIFY_ADMIN_ACCESS_TOKEN
+```
