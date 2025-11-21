@@ -1,41 +1,83 @@
-import { streamText } from "ai"
+import { convertToModelMessages, generateText, streamText } from "ai"
 
 import modelProvider from "@/libs/models"
 import vectorProvider from "@/libs/vectors"
+
+import z from "zod"
 
 export async function POST(req: Request) {
   const model = modelProvider.getModel()
 
   const { messages } = await req.json()
 
-  const lastMessage = messages[messages.length - 1]
-
-  const matchedProducts: { description: string; image: string; id: string }[] =
-    []
-  if (lastMessage.role === "user") {
-    const searchResults = await vectorProvider.search(lastMessage.parts[0].text)
-    searchResults.forEach((element) => {
-      matchedProducts.push({
-        description: element.message,
-        image: element.metadata?.image || "",
-        id: element.key,
-      })
-    })
-  }
-
-  const result = streamText({
+  const streamResult = streamText({
     model: model,
-    prompt: `
-    You are a helpful assistant that helps people find the right product. 
-    Please return top 3 products that match the user's query from the provided product list.
-
-    User query: ${lastMessage.content}
-    
-    @You have found the following products that might match the user's query:
-    ${JSON.stringify(matchedProducts, null, 2)}
-
+    system: `
+    You are a helpful assistant that helps people find the right product.
     `,
+    messages: convertToModelMessages(messages),
+    tools: {
+      searchProducts: {
+        description: "Search for products in the product database",
+        inputSchema: z.object({
+          text: z.string().describe("The search text"),
+        }),
+        execute: async ({ text }) => {
+          const matchedProducts: {
+            description: string
+            image: string
+            id: string
+          }[] = []
+
+          const searchResults = await vectorProvider.search(text)
+          searchResults.forEach((element) => {
+            matchedProducts.push({
+              description: element.message,
+              image: element.metadata?.image || "",
+              id: element.key,
+            })
+          })
+
+          const searchProductResult = generateText({
+            model: model,
+            prompt: `
+            You are a helpful assistant that helps people find the right product.
+            Please return top 3 products that match the user's query from the provided product list.
+
+            User query: ${text}
+
+            @You have found the following products that might match the user's query:
+            ${JSON.stringify(matchedProducts, null, 2)}
+
+            `,
+          })
+
+          return searchProductResult
+        },
+      },
+      getProductDetails: {
+        description: "Pull the product details from Shopify",
+        inputSchema: z.object({
+          title: z.string().describe("The product title"),
+          id: z.string().describe("The product ID"),
+        }),
+        execute: async ({ id, title }) => {
+          console.info("🚀🚀", id, title)
+          return { id, title, price: "$19.99" }
+        },
+      },
+      addToCart: {
+        description: "Add the product to the shopping cart",
+        inputSchema: z.object({
+          id: z.string().describe("The product ID"),
+        }),
+        execute: async ({ id }) => {
+          console.info("🚀Adding to cart:", id)
+          return true
+        },
+      },
+    },
   })
 
-  return result.toUIMessageStreamResponse()
+  return streamResult.toUIMessageStreamResponse()
 }

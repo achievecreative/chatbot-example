@@ -47,7 +47,25 @@ export default function Chat() {
                       </MessageContent>
                     </Message>
                   )
+                } else if (part.type == "tool-pull_prorducts") {
+                  return (
+                    <>
+                      <h1>{part.output?.title}</h1>
+                      <p>{part.output?.price}</p>
+                    </>
+                  )
+                } else if (part.type == "tool-searchProducts") {
+                  return (
+                    <Message key={index} from={msg.role}>
+                      <MessageContent>
+                        <MessageResponse>
+                          {part.output.steps[0].content[0].text}
+                        </MessageResponse>
+                      </MessageContent>
+                    </Message>
+                  )
                 }
+                console.info("🚀🚀 Additional part", part)
                 return null
               })}
             </div>
