@@ -4,6 +4,7 @@ import modelProvider from "@/libs/models"
 import vectorProvider from "@/libs/vectors"
 
 import { z } from "zod"
+import { getProduct } from "@/libs/shopify/products"
 
 export async function POST(req: Request) {
   const model = modelProvider.getModel()
@@ -58,11 +59,11 @@ export async function POST(req: Request) {
       getProductDetails: {
         description: "Pull the product details from Shopify",
         inputSchema: z.object({
-          title: z.string().describe("The product title"),
           id: z.string().describe("The product ID"),
         }),
-        execute: async ({ id, title }) => {
-          return { id, title, price: "$19.99" }
+        execute: async ({ id }) => {
+          const productDetail = await getProduct(id)
+          return productDetail
         },
       },
       addToCart: {

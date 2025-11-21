@@ -15,6 +15,8 @@ import {
   PromptInputTools,
 } from "./ai-elements/prompt-input"
 
+import Image from "next/image"
+
 export default function Chat() {
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
@@ -47,16 +49,30 @@ export default function Chat() {
                       </MessageContent>
                     </Message>
                   )
-                } else if (part.type == "tool-pull_prorducts") {
+                } else if (part.type == "tool-getProductDetails") {
                   const productInto = part.output as {
+                    id: string
                     title: string
-                    price: string
+                    images: { data: { url: string }[] }
+                    variants: { price: { amount: string } }[]
                   }
                   return (
-                    <>
+                    <div key={index}>
                       <h1>{productInto?.title}</h1>
-                      <p>{productInto?.price}</p>
-                    </>
+                      <div>
+                        {productInto?.images?.data?.map((img, index) => {
+                          return (
+                            <Image
+                              key={index}
+                              src={img.url}
+                              alt=""
+                              width={150}
+                              height={150}
+                            />
+                          )
+                        })}
+                      </div>
+                    </div>
                   )
                 } else if (part.type == "tool-searchProducts") {
                   const searchResult = part.output as {
@@ -87,7 +103,12 @@ export default function Chat() {
         </ConversationContent>
       </Conversation>
 
-      <PromptInput onSubmit={handleSubmit} className="mt-4" globalDrop multiple>
+      <PromptInput
+        onSubmit={handleSubmit}
+        className="mt-4 px-4"
+        globalDrop
+        multiple
+      >
         <PromptInputHeader>Good day!</PromptInputHeader>
         <PromptInputBody>
           <PromptInputTextarea placeholder="What kind of Snowboard you are looking for?" />
