@@ -18,16 +18,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ai-sdk/gateway@npm:2.0.11":
-  version: 2.0.11
-  resolution: "@ai-sdk/gateway@npm:2.0.11"
+"@ai-sdk/gateway@npm:2.0.13":
+  version: 2.0.13
+  resolution: "@ai-sdk/gateway@npm:2.0.13"
   dependencies:
     "@ai-sdk/provider": "npm:2.0.0"
     "@ai-sdk/provider-utils": "npm:3.0.17"
-    "@vercel/oidc": "npm:3.0.3"
+    "@vercel/oidc": "npm:3.0.5"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/72cd1de50c2dd63dc51362c3156cc0827af2abd4dbec2b5f55935d374c1e3af245b07e7606d24f8dff6d2e03550286da103f9015a3099c48da78283fe2634088
+  checksum: 10c0/c92413bdcbd05bca15d4f96fd9cd2ec3410870cacf9902181fcc9677bd00860d7920aac494a25e307a3d4c6aa2d68f87e6771402019062c88948a767b4a31280
   languageName: node
   linkType: hard
 
@@ -2956,6 +2956,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vercel/oidc@npm:3.0.5":
+  version: 3.0.5
+  resolution: "@vercel/oidc@npm:3.0.5"
+  checksum: 10c0/a63f0ab226f9070f974334014bd2676611a2d13473c10b867e3d9db8a2cc83637ae7922db26b184dd97b5945e144fc211c8f899642d205517e5b4e0e34f05b0e
+  languageName: node
+  linkType: hard
+
 "@xyflow/react@npm:^12.9.3":
   version: 12.9.3
   resolution: "@xyflow/react@npm:12.9.3"
@@ -3033,17 +3040,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ai@npm:^5.0.95":
-  version: 5.0.95
-  resolution: "ai@npm:5.0.95"
+"ai@npm:^5.0.98":
+  version: 5.0.98
+  resolution: "ai@npm:5.0.98"
   dependencies:
-    "@ai-sdk/gateway": "npm:2.0.11"
+    "@ai-sdk/gateway": "npm:2.0.13"
     "@ai-sdk/provider": "npm:2.0.0"
     "@ai-sdk/provider-utils": "npm:3.0.17"
     "@opentelemetry/api": "npm:1.9.0"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/cc10b1d64c56b4c7f4801a27519be76cbd48bd7c0e112b46e113b862be81ddace94c17b8238b59db7bce5913a3c8d7673da65395ee90558b73ddf7ea9e096766
+  checksum: 10c0/87c684263dd8f944287b3241255841aec092e487480c4abc6b28fdcea3a36f998f96022b1972f00d083525ccb95517dadcba6a69cbef1eadb0d6465041dcc092
   languageName: node
   linkType: hard
 
@@ -3470,7 +3477,7 @@ __metadata:
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
     "@xyflow/react": "npm:^12.9.3"
-    ai: "npm:^5.0.95"
+    ai: "npm:^5.0.98"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
     cmdk: "npm:^1.1.1"

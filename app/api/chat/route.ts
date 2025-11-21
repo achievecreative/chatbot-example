@@ -62,7 +62,6 @@ export async function POST(req: Request) {
           id: z.string().describe("The product ID"),
         }),
         execute: async ({ id, title }) => {
-          console.info("🚀🚀", id, title)
           return { id, title, price: "$19.99" }
         },
       },
@@ -72,7 +71,7 @@ export async function POST(req: Request) {
           id: z.string().describe("The product ID"),
         }),
         execute: async ({ id }) => {
-          console.info("🚀Adding to cart:", id)
+          console.info("🚀🚀 Added to cart", id)
           return true
         },
       },

@@ -48,18 +48,25 @@ export default function Chat() {
                     </Message>
                   )
                 } else if (part.type == "tool-pull_prorducts") {
+                  const productInto = part.output as {
+                    title: string
+                    price: string
+                  }
                   return (
                     <>
-                      <h1>{part.output?.title}</h1>
-                      <p>{part.output?.price}</p>
+                      <h1>{productInto?.title}</h1>
+                      <p>{productInto?.price}</p>
                     </>
                   )
                 } else if (part.type == "tool-searchProducts") {
+                  const searchResult = part.output as {
+                    steps: { content: { text: string }[] }[]
+                  }
                   return (
                     <Message key={index} from={msg.role}>
                       <MessageContent>
                         <MessageResponse>
-                          {part.output.steps[0].content[0].text}
+                          {searchResult.steps[0].content[0].text}
                         </MessageResponse>
                       </MessageContent>
                     </Message>
