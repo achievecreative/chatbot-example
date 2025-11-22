@@ -15,7 +15,7 @@ import {
   PromptInputTools,
 } from "./ai-elements/prompt-input"
 
-import Image from "next/image"
+import ProductCard from "./ProductCard"
 
 export default function Chat() {
   const { messages, sendMessage, status } = useChat({
@@ -54,26 +54,33 @@ export default function Chat() {
                     id: string
                     title: string
                     images: { data: { url: string }[] }
-                    variants: { price: { amount: string } }[]
+                    variants: {
+                      data: {
+                        id: string
+                        title: string
+                        price: {
+                          amount: string
+                          currencyCode: string
+                        }
+                        sku: string
+                        availableForSale: boolean
+                        quantityAvailable: number
+                      }[]
+                    }
                   }
-                  return (
-                    <div key={index}>
-                      <h1>{productInto?.title}</h1>
-                      <div>
-                        {productInto?.images?.data?.map((img, index) => {
-                          return (
-                            <Image
-                              key={index}
-                              src={img.url}
-                              alt=""
-                              width={150}
-                              height={150}
-                            />
-                          )
-                        })}
-                      </div>
-                    </div>
-                  )
+                  if (!productInto) {
+                    return null
+                  }
+                  const productCard = {
+                    id: productInto.id,
+                    title: productInto.title,
+                    images: productInto.images.data.map((img) => ({
+                      url: img.url,
+                      altText: "",
+                    })),
+                    variants: productInto.variants.data,
+                  }
+                  return <ProductCard {...productCard} key={index} />
                 } else if (part.type == "tool-searchProducts") {
                   const searchResult = part.output as {
                     steps: { content: { text: string }[] }[]
@@ -95,7 +102,6 @@ export default function Chat() {
                     </Message>
                   )
                 }
-                console.info("🚀🚀 Additional part", part)
                 return null
               })}
             </div>

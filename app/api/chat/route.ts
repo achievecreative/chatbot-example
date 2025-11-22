@@ -4,7 +4,7 @@ import modelProvider from "@/libs/models"
 import vectorProvider from "@/libs/vectors"
 
 import { z } from "zod"
-import { getProduct } from "@/libs/shopify/products"
+import { getProduct } from "@/libs/shopify"
 
 export async function POST(req: Request) {
   const model = modelProvider.getModel()
@@ -14,7 +14,9 @@ export async function POST(req: Request) {
   const streamResult = streamText({
     model: model,
     system: `
-    You are a helpful assistant that helps people find the right product.
+    You are a helpful assistant that helps people find the right product. 
+    You will call tools to search for products, get product details, and add products to the shopping cart based on user requests.
+
     `,
     messages: convertToModelMessages(messages),
     tools: {

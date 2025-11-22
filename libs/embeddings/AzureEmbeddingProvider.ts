@@ -7,7 +7,7 @@ import { AzureOpenAI } from "openai"
 export class AzureEmbeddingProvider implements IEmbeddingProvider {
   async embedding(contents: EmbedContent[]): Promise<EmbedResult[]> {
     const client = new AzureOpenAI({
-      apiKey: process.env.AZURE_EMBEDDING_API_KEY,
+      apiKey: process.env.AZURE_OPENAI_API_KEY,
       endpoint: process.env.AZURE_EMBEDDING_ENDPOINT,
       apiVersion: process.env.AZURE_EMBEDDING_API_VERSION,
     })

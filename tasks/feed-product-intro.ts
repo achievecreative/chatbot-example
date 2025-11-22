@@ -1,7 +1,7 @@
 import "./setup-env"
 import { createAzure } from "@ai-sdk/azure"
 import { generateText } from "ai"
-import { getProducts, invokeShopifyAdminApi } from "@/libs/shopify/products"
+import { getProducts, invokeShopifyAdminApi } from "@/libs/shopify"
 
 const updateProduct = `
 mutation($product: ProductUpdateInput){

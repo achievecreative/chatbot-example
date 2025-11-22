@@ -1,10 +1,6 @@
-export interface ProductInfo {
-  id: string
-  title: string
-  description: string
-}
+import { ProductInfo } from "./types"
 
-export interface ProductsResponse {
+interface ProductsResponse {
   data: {
     products: {
       pageInfo: {
@@ -18,7 +14,7 @@ export interface ProductsResponse {
   }
 }
 
-export interface ProductDetailResponse {
+interface ProductDetailResponse {
   data: {
     product: {
       id: string
