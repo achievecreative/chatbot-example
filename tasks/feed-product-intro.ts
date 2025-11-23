@@ -15,7 +15,7 @@ mutation($product: ProductUpdateInput){
 
 const azure = createAzure({
   apiKey: process.env.AZURE_OPENAI_API_KEY,
-  baseURL: process.env.AZURE_OPENAI_EndPoint,
+  resourceName: process.env.AZURE_OPENAI_RESOURCE_NAME!,
 })
 
 const client = azure(process.env.AZURE_OPENAI_MODEL!)

@@ -47,7 +47,7 @@ export async function invokeShopifyAdminApi<T, Variables extends object>(
   variables: Variables
 ): Promise<T> {
   return (await fetch(
-    `https://${process.env.SHOPIFY_DOMAIN}/admin/api/2025-10/graphql.json`,
+    `https://${process.env.SHOPIFY_DOMAIN}.myshopify.com/admin/api/2025-10/graphql.json`,
     {
       method: "POST",
       headers: {
