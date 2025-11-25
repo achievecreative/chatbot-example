@@ -11,11 +11,11 @@ export default function ChatbotWidget() {
     <div>
       <div
         className={cn(
-          "fixed max-h-screen h-[calc(100vh-130px)] right-10 bottom-24 lg:w-[calc(100vw-420px)]  max-w-full pl-6 border-0 rounded-lg shadow-lg",
+          "fixed max-h-screen h-[calc(100vh-130px)] right-10 bottom-24 lg:w-[calc(100vw-420px)]  max-w-full p-4 border-0 rounded-lg shadow-lg",
           showChatWidget ? "" : "hidden"
         )}
       >
-        <div className="flex min-h-full w-full flex-col py-4 bg-white dark:bg-black sm:items-start">
+        <div className="flex min-h-full w-full flex-col bg-white dark:bg-black sm:items-start">
           <Chat />
         </div>
       </div>
