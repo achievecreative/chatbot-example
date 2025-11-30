@@ -45,7 +45,7 @@ export async function POST(req: Request) {
             model: model,
             prompt: `
             You are a helpful assistant that helps people find the right product.
-            Please return top 3 products that match the user's query from the provided product list.
+            Please return top 3 products that match the user's query from the provided product list with the summary of each product.
 
             User query: ${text}
 
