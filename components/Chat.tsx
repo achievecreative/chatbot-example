@@ -36,7 +36,7 @@ export default function Chat() {
 
   return (
     <>
-      <Conversation className="w-full">
+      <Conversation className="w-full max-h-[calc(100vh-350px)] overflow-y-auto  [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
         <ConversationContent>
           {messages.map((msg) => (
             <div key={msg.id} className="message-item p-3">
@@ -115,7 +115,9 @@ export default function Chat() {
         globalDrop
         multiple
       >
-        <PromptInputHeader>Good day!</PromptInputHeader>
+        <PromptInputHeader>
+          Good day! Let me help you find the right snowboard.
+        </PromptInputHeader>
         <PromptInputBody>
           <PromptInputTextarea placeholder="What kind of Snowboard you are looking for?" />
         </PromptInputBody>
