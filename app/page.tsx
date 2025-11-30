@@ -1,4 +1,3 @@
-import Chat from "@/components/Chat"
 import ChatbotWidget from "@/components/ChatbotWidget"
 
 export default async function Home() {

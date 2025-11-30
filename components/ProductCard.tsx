@@ -36,32 +36,37 @@ export type ProductCardProps = ProductCard
 export default function ProductCard(props: ProductCardProps) {
   return (
     <Card className={cn("w-[300px] p-0")}>
-         <Carousel>
-          <CarouselContent className="m-0">
-            {props.images.map((image, index) => (
-              <CarouselItem key={index} className="w-full h-40">
-                <div>
-                  <Image
-                    src={image.url}
-                    alt={image.altText || "Product Image"}
-                    fill
-                    className="rounded"
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      <CardHeader>
-       <p>{props.title}</p>
-      </CardHeader>
+      <Carousel className="pt-2">
+        <CarouselContent className="m-0">
+          {props.images.map((image, index) => (
+            <CarouselItem key={index} className="w-full h-40">
+              <Image
+                src={image.url}
+                alt={image.altText || "Product Image"}
+                fill
+                className="rounded"
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+      <CardHeader>{props.title}</CardHeader>
       <CardContent>
+        {props.variants.length > 0 &&
+          props.variants.map((variant) => (
+            <div key={variant.id} className="mb-2">
+              <div className="text-base">
+                {variant.price.amount} {variant.price.currencyCode}
+              </div>
+            </div>
+          ))}
         <div className="space-y-2">
-        <Button className="w-full bg-white border-gray-400 border text-black">Add to Cart</Button>
+          <Button className="w-full bg-white border-gray-400 border text-black hover:text-white">
+            Add to Cart
+          </Button>
         </div>
       </CardContent>
-      <CardFooter className="pb-2">
-      </CardFooter>
+      <CardFooter className="pb-2"></CardFooter>
     </Card>
   )
 }
