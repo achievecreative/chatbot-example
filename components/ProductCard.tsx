@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "./ui/card"
 import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel"
 import { Button } from "./ui/button"
 import { cn } from "@/lib/utils"
+import { useState } from "react"
 
 interface ProductVariant {
   id: string
@@ -34,9 +35,11 @@ export interface ProductCardsProps {
 export type ProductCardProps = ProductCard
 
 export default function ProductCard(props: ProductCardProps) {
+  const [selectedVariant, setSelectedVariant] = useState("")
+
   return (
     <Card className={cn("w-[300px] p-0")}>
-      <Carousel className="pt-2">
+      <Carousel>
         <CarouselContent className="m-0">
           {props.images.map((image, index) => (
             <CarouselItem key={index} className="w-full h-40">
@@ -44,7 +47,7 @@ export default function ProductCard(props: ProductCardProps) {
                 src={image.url}
                 alt={image.altText || "Product Image"}
                 fill
-                className="rounded"
+                className="rounded-t-[12px]"
               />
             </CarouselItem>
           ))}
@@ -52,14 +55,26 @@ export default function ProductCard(props: ProductCardProps) {
       </Carousel>
       <CardHeader>{props.title}</CardHeader>
       <CardContent>
-        {props.variants.length > 0 &&
-          props.variants.map((variant) => (
-            <div key={variant.id} className="mb-2">
-              <div className="text-base">
-                {variant.price.amount} {variant.price.currencyCode}
+        <div className="flex flex-row gap-2">
+          {props.variants.length > 0 &&
+            props.variants.map((variant, index) => (
+              <div
+                key={variant.id}
+                className={cn(
+                  "mb-2 border p-1 rounded cursor-pointer",
+                  (index == 0 && !selectedVariant) ||
+                    selectedVariant == variant.id
+                    ? "bg-blue-800 border-blue-200 text-white"
+                    : ""
+                )}
+                onClick={() => setSelectedVariant(variant.id)}
+              >
+                <div className="text-sm">
+                  {variant.price.amount} {variant.price.currencyCode}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+        </div>
         <div className="space-y-2">
           <Button className="w-full bg-white border-gray-400 border text-black hover:text-white">
             Add to Cart

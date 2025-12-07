@@ -39,7 +39,7 @@ export default function Chat() {
       <Conversation className="w-full max-h-[calc(100vh-350px)] overflow-y-auto  [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
         <ConversationContent>
           {messages.map((msg) => (
-            <div key={msg.id} className="message-item p-3">
+            <div key={msg.id} className="message-item p-3 flex gap-2">
               {msg.parts.map((part, index) => {
                 if (part.type === "text") {
                   return (

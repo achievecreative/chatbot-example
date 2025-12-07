@@ -81,5 +81,13 @@ export async function POST(req: Request) {
     },
   })
 
-  return streamResult.toUIMessageStreamResponse()
+  return streamResult.toUIMessageStreamResponse({
+    onFinish: ({ messages }) => {
+      messages
+        .flatMap((msg) => msg.parts)
+        .forEach((part) => {
+          console.log("Generated part:", part)
+        })
+    },
+  })
 }
