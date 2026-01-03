@@ -94,77 +94,77 @@ export type ConfirmationRequestProps = {
 };
 
 export const ConfirmationRequest = ({ children }: ConfirmationRequestProps) => {
-  const { state } = useConfirmation()
+  const { state } = useConfirmation();
 
   // Only show when approval is requested
   // @ts-expect-error state only available in AI SDK v6
   if (state !== "approval-requested") {
-    return null
+    return null;
   }
 
-  return children
-}
+  return children;
+};
 
 export type ConfirmationAcceptedProps = {
-  children?: ReactNode
-}
+  children?: ReactNode;
+};
 
 export const ConfirmationAccepted = ({
   children,
 }: ConfirmationAcceptedProps) => {
-  const { approval, state } = useConfirmation()
+  const { approval, state } = useConfirmation();
 
   // Only show when approved and in response states
   if (
     !approval?.approved ||
-    // @ts-expect-error state only available in AI SDK v6
+        // @ts-expect-error state only available in AI SDK v6
     (state !== "approval-responded" &&
-      // @ts-expect-error state only available in AI SDK v6
+        // @ts-expect-error state only available in AI SDK v6
       state !== "output-denied" &&
       state !== "output-available")
   ) {
-    return null
+    return null;
   }
 
-  return children
-}
+  return children;
+};
 
 export type ConfirmationRejectedProps = {
-  children?: ReactNode
-}
+  children?: ReactNode;
+};
 
 export const ConfirmationRejected = ({
   children,
 }: ConfirmationRejectedProps) => {
-  const { approval, state } = useConfirmation()
+  const { approval, state } = useConfirmation();
 
   // Only show when rejected and in response states
   if (
     approval?.approved !== false ||
-    // @ts-expect-error state only available in AI SDK v6
+        // @ts-expect-error state only available in AI SDK v6
     (state !== "approval-responded" &&
-      // @ts-expect-error state only available in AI SDK v6
+        // @ts-expect-error state only available in AI SDK v6
       state !== "output-denied" &&
       state !== "output-available")
   ) {
-    return null
+    return null;
   }
 
-  return children
-}
+  return children;
+};
 
-export type ConfirmationActionsProps = ComponentProps<"div">
+export type ConfirmationActionsProps = ComponentProps<"div">;
 
 export const ConfirmationActions = ({
   className,
   ...props
 }: ConfirmationActionsProps) => {
-  const { state } = useConfirmation()
+  const { state } = useConfirmation();
 
   // Only show when approval is requested
   // @ts-expect-error state only available in AI SDK v6
   if (state !== "approval-requested") {
-    return null
+    return null;
   }
 
   return (
@@ -172,8 +172,8 @@ export const ConfirmationActions = ({
       className={cn("flex items-center justify-end gap-2 self-end", className)}
       {...props}
     />
-  )
-}
+  );
+};
 
 export type ConfirmationActionProps = ComponentProps<typeof Button>;
 

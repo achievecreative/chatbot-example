@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     You will call tools to search for products, get product details, and add products to the shopping cart based on user requests.
 
     `,
-    messages: convertToModelMessages(messages),
+    messages: await convertToModelMessages(messages),
     tools: {
       searchProducts: {
         description: "Search for products in the product database",
