@@ -2,7 +2,11 @@
 
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
-import { Conversation, ConversationContent } from "./ai-elements/conversation"
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from "./ai-elements/conversation"
 import { Message, MessageContent, MessageResponse } from "./ai-elements/message"
 import {
   PromptInput,
@@ -36,8 +40,8 @@ export default function Chat() {
 
   return (
     <>
-      <Conversation className="w-full max-h-[calc(100vh-350px)] overflow-y-auto  [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
-        <ConversationContent>
+      <Conversation className="w-full h-full max-h-[calc(100vh-350px)] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
+        <ConversationContent className="overflow-y-auto h-full">
           {messages.map((msg) => (
             <div key={msg.id} className="message-item p-3 flex gap-2">
               {msg.parts.map((part, index) => {
@@ -107,6 +111,7 @@ export default function Chat() {
             </div>
           ))}
         </ConversationContent>
+        <ConversationScrollButton />
       </Conversation>
 
       <PromptInput

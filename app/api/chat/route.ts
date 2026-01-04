@@ -46,6 +46,8 @@ export async function POST(req: Request) {
             prompt: `
             You are a helpful assistant that helps people find the right product.
             Please return top 3 products that match the user's query from the provided product list with the summary of each product.
+            Return product information in markdown format, with each product on a new line.
+            If no products are found, respond with "No products found".
 
             User query: ${text}
 
