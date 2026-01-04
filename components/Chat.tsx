@@ -40,8 +40,8 @@ export default function Chat() {
 
   return (
     <>
-      <Conversation className="w-full h-full max-h-[calc(100vh-350px)] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
-        <ConversationContent className="overflow-y-auto h-full">
+      <Conversation className="size-full">
+        <ConversationContent className="max-h-[calc(100vh-350px)]">
           {messages.map((msg) => (
             <div key={msg.id} className="message-item p-3 flex gap-2">
               {msg.parts.map((part, index) => {
