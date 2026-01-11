@@ -38,6 +38,10 @@ export default function Chat() {
     message.text = ""
   }
 
+  const handleAddToCart = (productName: string, variantId: string) => {
+    sendMessage({ text: `Added ${productName} ${variantId} to cart.` })
+  }
+
   return (
     <>
       <Conversation className="size-full">
@@ -84,7 +88,13 @@ export default function Chat() {
                     })),
                     variants: productInto.variants.data,
                   }
-                  return <ProductCard {...productCard} key={index} />
+                  return (
+                    <ProductCard
+                      {...productCard}
+                      key={index}
+                      addToCart={handleAddToCart}
+                    />
+                  )
                 } else if (part.type == "tool-searchProducts") {
                   const searchResult = part.output as {
                     steps: { content: { text: string }[] }[]

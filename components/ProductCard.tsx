@@ -32,16 +32,31 @@ export interface ProductCardsProps {
   products: ProductCard[]
 }
 
-export type ProductCardProps = ProductCard
+export type ProductCardProps = {
+  addToCart?: (productName: string, variantId: string) => void
+} & ProductCard
 
-export default function ProductCard(props: ProductCardProps) {
+export default function ProductCard({
+  title,
+  variants,
+  images,
+  addToCart,
+}: ProductCardProps) {
   const [selectedVariant, setSelectedVariant] = useState("")
+
+  const handleAddToCart = () => {
+    const variant = variants.find((v) => v.id === selectedVariant)
+    if (!variant) {
+      return
+    }
+    addToCart?.(variant.title, selectedVariant)
+  }
 
   return (
     <Card className={cn("w-[300px] p-0")}>
       <Carousel>
         <CarouselContent className="m-0">
-          {props.images.map((image, index) => (
+          {images.map((image, index) => (
             <CarouselItem key={index} className="w-full h-40">
               <Image
                 src={image.url}
@@ -53,11 +68,11 @@ export default function ProductCard(props: ProductCardProps) {
           ))}
         </CarouselContent>
       </Carousel>
-      <CardHeader>{props.title}</CardHeader>
+      <CardHeader>{title}</CardHeader>
       <CardContent>
         <div className="flex flex-row gap-2">
-          {props.variants.length > 0 &&
-            props.variants.map((variant, index) => (
+          {variants.length > 0 &&
+            variants.map((variant, index) => (
               <div
                 key={variant.id}
                 className={cn(
@@ -76,7 +91,10 @@ export default function ProductCard(props: ProductCardProps) {
             ))}
         </div>
         <div className="space-y-2">
-          <Button className="w-full bg-white border-gray-400 border text-black hover:text-white">
+          <Button
+            className="w-full bg-white border-gray-400 border text-black hover:text-white"
+            onClick={handleAddToCart}
+          >
             Add to Cart
           </Button>
         </div>

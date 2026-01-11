@@ -3,3 +3,8 @@ export interface ProductInfo {
   title: string
   description: string
 }
+
+
+export interface Cart {
+  id: string
+}
